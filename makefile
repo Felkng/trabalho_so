@@ -1,3 +1,7 @@
+# Makefile
+
+RESULT_DIR = result
+
 huffman: main.o huffman.o
 	g++ main.o huffman.o -o huffman
 
@@ -9,3 +13,4 @@ huffman.o: huffman.cpp huffman.h
 
 clean:
 	rm -f *.o huffman
+	rm -rf $(RESULT_DIR)  # Remove a pasta result
