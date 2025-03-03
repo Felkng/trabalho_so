@@ -15,15 +15,15 @@ void createDirectoryIfNotExists(const string &dir) {
 int main() {
     HuffmanTree huffman;
     
-    string input = "video.mp4";   // Arquivo original
-    string compressed = "video.huff";  // Arquivo compactado
-    string decompressed = "output.mp4"; // Arquivo descompactado
+    string input = "lalala.pdf";   // Arquivo original
+    string compressed = "file.huff";  // Arquivo compactado
+    string decompressed = "output_" + input.substr(0, input.find_last_of(".")) + input.substr(input.find_last_of("."));
     createDirectoryIfNotExists("result");
 
     huffman.compress(input, compressed);
     cout << "Arquivo compactado: " << compressed << endl;
 
-    huffman.decompress(compressed, decompressed);
+    huffman.decompress("result/"+compressed, decompressed);
     cout << "Arquivo descompactado: " << decompressed << endl;
 
     return 0;
