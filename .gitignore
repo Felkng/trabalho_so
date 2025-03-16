@@ -1,5 +1,7 @@
 video.mp4
 *.mp4
+*.txt
+*.iso
 *.o
 huffman
 result/
