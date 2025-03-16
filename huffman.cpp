@@ -64,7 +64,7 @@ void HuffmanTree::compress(const string &inputFile, const string &outputFile) {
     root = buildTree(freq_table);
     generateCodes(root, "");
 
-    string resultPath = "result/" + outputFile;
+    string resultPath = outputFile;
     ofstream output(resultPath, ios::binary);
     if (!output) {
         cerr << "Erro ao criar arquivo " << resultPath << endl;
@@ -114,7 +114,7 @@ void HuffmanTree::decompress(const string &inputFile, const string &outputFile) 
     }
     input.close();
 
-    string resultPath = "result/" + outputFile;
+    string resultPath = outputFile;
     ofstream output(resultPath, ios::binary);
     if (!output) {
         cerr << "Erro ao criar arquivo " << resultPath << endl;
