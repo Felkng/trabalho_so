@@ -16,10 +16,15 @@ huffman.o: huffman.cpp huffman.h
 
 # Regra para executar a compressão
 exeC: huffman
-	valgrind ./huffman C $(word 2, $(MAKECMDGOALS)) $(word 3, $(MAKECMDGOALS))
+	./huffman C $(word 2, $(MAKECMDGOALS)) $(word 3, $(MAKECMDGOALS))
 
+val_exeC: huffman
+	valgrind ./huffman C $(word 2, $(MAKECMDGOALS)) $(word 3, $(MAKECMDGOALS))
 # Regra para executar a descompressão
 exeD: huffman
+	./huffman D $(word 2, $(MAKECMDGOALS)) $(word 3, $(MAKECMDGOALS))
+
+val_exeD: huffman
 	valgrind ./huffman D $(word 2, $(MAKECMDGOALS)) $(word 3, $(MAKECMDGOALS))
 
 # Limpeza dos arquivos de objetos e binário

@@ -79,10 +79,13 @@ void HuffmanTree::compress(const string &inputFile, const string &outputFile) {
     for (unsigned char c : content) {
         encodedStr += huffmanCodes[c];
     }
-
+    int ct=0;
     while (encodedStr.size() % 8 != 0) {
         encodedStr += "0";
+        ct++;
     }
+
+    output.write(reinterpret_cast<char*>(&ct), sizeof(int));
 
     for (size_t i = 0; i < encodedStr.size(); i += 8) {
         bitset<8> byte(encodedStr.substr(i, 8));
@@ -104,7 +107,8 @@ void HuffmanTree::decompress(const string &inputFile, const string &outputFile) 
     for (int i = 0; i < 256; i++) {
         input.read(reinterpret_cast<char*>(&freq_table[i]), sizeof(int));
     }
-
+    int ct;
+    input.read(reinterpret_cast<char*>(&ct), sizeof(int));
     root = buildTree(freq_table);
 
     string bitString = "";
@@ -121,6 +125,7 @@ void HuffmanTree::decompress(const string &inputFile, const string &outputFile) 
         return;
     }
 
+    bitString = bitString.substr(0, bitString.size() - ct);
     Node* curr = root;
     for (char bit : bitString) {
         curr = (bit == '0') ? curr->left : curr->right;
