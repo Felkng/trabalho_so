@@ -1,5 +1,4 @@
 #include "huffman.hpp"
-#include "heap.hpp"
 
 HuffmanTree::Node::Node(unsigned char d, int f) : data(d), freq(f), left(nullptr), right(nullptr) {}
 
@@ -9,8 +8,12 @@ HuffmanTree::~HuffmanTree() {
     freeTree(root);
 }
 
+bool HuffmanTree::Compare::operator()(Node* a, Node* b) {
+    return a->freq > b->freq;
+}
+
 HuffmanTree::Node* HuffmanTree::buildTree(const vector<int>& freq_table) {
-    MinHeap<Node*> minHeap;
+    priority_queue<Node*, vector<Node*>, Compare> minHeap;
     for (int i = 0; i < 256; i++) {
         if (freq_table[i] > 0) {
             minHeap.push(new Node((unsigned char)i, freq_table[i]));
@@ -76,10 +79,13 @@ void HuffmanTree::compress(const string &inputFile, const string &outputFile) {
     for (unsigned char c : content) {
         encodedStr += huffmanCodes[c];
     }
-
+    int ct=0;
     while (encodedStr.size() % 8 != 0) {
         encodedStr += "0";
+        ct++;
     }
+
+    output.write(reinterpret_cast<char*>(&ct), sizeof(int));
 
     for (size_t i = 0; i < encodedStr.size(); i += 8) {
         bitset<8> byte(encodedStr.substr(i, 8));
@@ -101,7 +107,8 @@ void HuffmanTree::decompress(const string &inputFile, const string &outputFile) 
     for (int i = 0; i < 256; i++) {
         input.read(reinterpret_cast<char*>(&freq_table[i]), sizeof(int));
     }
-
+    int ct;
+    input.read(reinterpret_cast<char*>(&ct), sizeof(int));
     root = buildTree(freq_table);
 
     string bitString = "";
@@ -118,6 +125,7 @@ void HuffmanTree::decompress(const string &inputFile, const string &outputFile) 
         return;
     }
 
+    bitString = bitString.substr(0, bitString.size() - ct);
     Node* curr = root;
     for (char bit : bitString) {
         curr = (bit == '0') ? curr->left : curr->right;

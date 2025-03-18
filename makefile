@@ -1,19 +1,15 @@
 
 # Compilar o programa principal
-huffman: main.o huffman.o heap.o
-	g++ main.o huffman.o heap.o -o huffman
+huffman: main.o huffman.o
+	g++ main.o huffman.o -o huffman
 
 # Compilar o arquivo main.o
-main.o: main.cpp huffman.hpp heap.hpp
+main.o: main.cpp huffman.hpp
 	g++ -c main.cpp
 
 # Compilar o arquivo huffman.o
-huffman.o: huffman.cpp huffman.hpp heap.hpp
+huffman.o: huffman.cpp huffman.hpp
 	g++ -c huffman.cpp
-
-# Compilar o arquivo heap.o
-heap.o: heap.cpp heap.hpp
-	g++ -c heap.cpp
 
 # Regra para executar a compressão
 exeC: huffman
@@ -21,7 +17,6 @@ exeC: huffman
 
 val_exeC: huffman
 	valgrind ./huffman C $(word 2, $(MAKECMDGOALS)) $(word 3, $(MAKECMDGOALS))
-
 # Regra para executar a descompressão
 exeD: huffman
 	./huffman D $(word 2, $(MAKECMDGOALS)) $(word 3, $(MAKECMDGOALS))

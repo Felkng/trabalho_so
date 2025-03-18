@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 #include "huffman.hpp"
-#include "heap.hpp"
 #include <sys/stat.h>
 #include <sys/types.h>
 using namespace std;
