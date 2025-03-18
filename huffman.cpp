@@ -1,10 +1,7 @@
-#include "huffman.h"
+#include "huffman.hpp"
+#include "heap.hpp"
 
 HuffmanTree::Node::Node(unsigned char d, int f) : data(d), freq(f), left(nullptr), right(nullptr) {}
-
-bool HuffmanTree::Compare::operator()(Node* a, Node* b) {
-    return a->freq > b->freq;
-}
 
 HuffmanTree::HuffmanTree() : root(nullptr) {}
 
@@ -13,7 +10,7 @@ HuffmanTree::~HuffmanTree() {
 }
 
 HuffmanTree::Node* HuffmanTree::buildTree(const vector<int>& freq_table) {
-    priority_queue<Node*, vector<Node*>, Compare> minHeap;
+    MinHeap<Node*> minHeap;
     for (int i = 0; i < 256; i++) {
         if (freq_table[i] > 0) {
             minHeap.push(new Node((unsigned char)i, freq_table[i]));
